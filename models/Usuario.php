@@ -34,6 +34,41 @@ class Usuario
      */
     public function Cadastrar($dados)
     {
+        try{
+
+            $sql = "INSERT INTO{$this->table} (nome, email,senha, perfil)
+
+            VALUES (nome, :email, :senha :perfil) ";
+
+            $stmt = $this->db->prepare($sql);
+
+        }catch(PDOException $e){
+
+            echo "erro na preparação da consulta:".$e->getMessage();
+
+        }
+
+        $stmt->bindParam(':nome',$dados['nome']);
+
+        $stmt->bindParam(':email',$dados['email']);
+
+        $stmt->bindParam(':senha',$dados['senha']);
+
+        $stmt->bindParam(':perfil',$dados['perfil']);
+
+ 
+
+        try{
+
+            $stmt->execute();
+
+            echo "inserção bem-sucedida!";
+
+        }catch (PDOException $e){
+
+            echo"erro na insercao:".$e->getMessage();
+
+        }
     }
 
     /*
@@ -44,6 +79,42 @@ class Usuario
     */
     public function editar($id, $dados)
     {
+        try{
+
+            $sql = "UPDATE {$this->table} set nome = :nome, email = :email,
+
+            senha = :senha, perfil = :perfil WHERE id_usuario = :id";
+
+            $stmt = $this->db->prepare($sql);
+
+        }catch (PDOException $e){
+
+            echo"erro na preparação da consulta:".$e->getMessage();
+
+        }
+
+        $stmt->bindparam(':nome',$dados['nome']);
+
+        $stmt->bindParam(':email',$dados['email']);
+
+        $stmt->bindParam(':senha',$dados['senha']);
+
+        $stmt->bindParam(':perfil',$dados['perfil']);
+
+ 
+
+        try{
+
+            $stmt->execute();
+
+            echo "inserção bem-sucedida!";
+
+        }catch (PDOException $e){
+
+            echo"erro na insercao:".$e->getMessage();
+
+        }
+
     }
 
     //Excluir usuário
