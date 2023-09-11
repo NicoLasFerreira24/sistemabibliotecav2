@@ -1,17 +1,22 @@
 <?php
     require_once $_SERVER['DOCUMENT_ROOT'] . "/database/DBconexao.php";
-class Usuario{
+
+   // require_once $_SERVER['DOCUMENT_ROOT'] . "/models/Aluno.php";
+class Aluno{
+
     protected $db;
-    protected $table = "usuarios";
+    protected $table = "alunos";
+
     public function __construct()
     {
         $this->db = DBConexao::getConexao();
     }
+
     /**
      * Buscar registro unico
      * @param int $id
-     * @return Usuario|null
-     */ 
+     * @return Aluno|null
+     */
     public function buscar($id){
         try{
             $sql = "SELECT * FROM {$this->table} WHERE id=:id";
@@ -26,8 +31,9 @@ class Usuario{
         }
         
     }
+
     /**
-     * Listar todos os registros da tabela usuário
+     * Listar todos os registros da tabela alunos
      */
     public function listar(){
         try{
@@ -39,19 +45,21 @@ class Usuario{
             return null;
         }
     }
-    /**
-     * Cadastrar Usuário
+     /**
+     * Cadastrar usuário
      * @param array $dados
      * @return bool
      */
-    public function cadastrar($dados){
-        try {
-            $query = "INSERT INTO {$this->table} (nome, email, senha, perfil) VALUES (:nome, :email, :senha, :perfil)";
+    public function Cadastrar($dados){
+        try{
+            $query = "INSERT INTO {$this->table} (nome,cpf,email,telefone,celular,data_nascimento) VALUES (:nome,:cpf,:email,:telefone,:celular,:data_nascimento)";
             $stmt = $this->db->prepare($query);
             $stmt->bindParam(':nome', $dados['nome']);
+            $stmt->bindParam(':cpf', $dados['cpf']);
             $stmt->bindParam(':email', $dados['email']);
-            $stmt->bindParam(':senha', $dados['senha']);
-            $stmt->bindParam(':perfil', $dados['perfil']);
+            $stmt->bindParam(':telefone', $dados['telefone']);
+            $stmt->bindParam(':celular', $dados['celular']);
+            $stmt->bindParam(':data_nascimento', $dados['data_nascimento']);
             $stmt->execute();
             return true;
         } catch (PDOException $e) {
@@ -66,14 +74,16 @@ class Usuario{
      * @param array $dados
      * @return bool
      */
-    public function editar($id, $dados){
+
+     public function editar($id, $dados){
         try {
-            $sql = "UPDATE {$this->table} SET nome = :nome, email = :email, senha = :senha, perfil = :perfil WHERE id = :id";
+            $sql = "UPDATE {$this->table} SET nome = :nome, cpf = cpf, email = :email, telefone = :telefone, celular = :celular WHERE id = :id";
             $stmt = $this->db->prepare($sql);
             $stmt->bindParam(':nome', $dados['nome']);
+            $stmt->bindParam(':cpf', $dados['cpf']);
             $stmt->bindParam(':email', $dados['email']);
-            $stmt->bindParam(':senha', $dados['senha']);
-            $stmt->bindParam(':perfil', $dados['perfil']);
+            $stmt->bindParam(':telefone', $dados['telefone']);
+            $stmt->bindParam(':celular', $dados['celular']);
             $stmt->bindParam(':id', $id, PDO::PARAM_INT);
             $stmt->execute();
             return true;
@@ -82,6 +92,7 @@ class Usuario{
             return false;
         }
     }
+
     //Excluir usuário
     public function excluir($id){
         try {
