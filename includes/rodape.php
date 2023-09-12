@@ -1,4 +1,3 @@
-
 <footer class="bg-secondary text-white text-center p-2 mt-auto">
     Copyright &copy; <?=date("Y")?> - Todos os direitos são reservados
 </footer>

@@ -10,12 +10,10 @@ class Usuario
 
     protected $db;
     protected $table = "usuarios";
-
     public function __construct()
     {
         $this->db = DBConexao::getConexao();
     }
-
     /**
      * Buscar registro unico
      * @param int $id
@@ -42,9 +40,8 @@ class Usuario
         }     
 
     }
-
     /**
-     * Listar todos os registros da tabela usuários
+     * Listar todos os registros da tabela usuário
      */
     public function Listar(){
 
@@ -63,9 +60,8 @@ class Usuario
         }
 
     }
-
     /**
-     * Cadastrar usuário
+     * Cadastrar Usuário
      * @param array $dados
      * @return bool
      */
@@ -135,9 +131,7 @@ class Usuario
             echo"erro na iserçao:".$e->getMessage();
 
         }
-
     }
-
     //Excluir usuário
     public function Excluir($id){
 
