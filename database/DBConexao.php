@@ -7,15 +7,14 @@ class DBConexao{
     private $username = "root";
     private $password = "senac2023";
 
-    private $conx;
+    public $conx;
     private static $instance = null;
 
     public function __construct()
     {
         try{
             //Inicializar a conexão
-            $this->conx = new PDO("mysql:host=$this->host);
-            dbname=$this->dbname;charset=utf8",$this->username,$this->password);
+            $this->conx = new PDO("mysql:host=$this->host; dbname=$this->dbname;charset=utf8",$this->username,$this->password);
             $this->conx->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
         }catch(PDOException $e){
