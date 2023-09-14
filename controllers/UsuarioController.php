@@ -37,25 +37,48 @@ require_once $_SERVER ['DOCUMENT_ROOT'] . "/models/Usuario.php";
         
         public function editarUsuario(){
 
-            $id = $_GET['id'];
+            $id_usuario = $_GET['id_usuario'];
+            if(isset($_POST['senha']) && !empty($_POST['senha'])){
+
+                //Criar nova senha
+                $senha = password_hash($_POST['senha'], PASSWORD_DEFAULT);
+            }else{
+
+                //Manter senha 
+                $senha = $this->usuarioModel->Buscar($id_usuario);
+                
+            }
+
+            $id_usuario = $_GET['id_usuario'];
 
             if($_SERVER['REQUEST_METHOD'] === 'POST'){
     
                 $dados = [
                     'nome' => $_POST['nome'],
                     'email' => $_POST['email'],
-                    'senha' => password_hash($_POST['senha'], PASSWORD_DEFAULT),
+                    'senha' => $senha,
                     'perfil' => $_POST['perfil']
                 ];
 
-                $this->usuarioModel->Editar($id, $dados);
+                $this->usuarioModel->Editar($id_usuario, $dados);
 
                 header('Location: index.php');
                 exit;
             }
 
-            return $this->usuarioModel->Buscar($id);
+            return $this->usuarioModel->Buscar($id_usuario);
 
         }
 
-    }
+        public function excluirUsuario(){
+
+            $this->usuarioModel->excluir($_GET['id_usuario']);
+
+            header('Location: index.php');
+            exit;
+        }
+
+    }    
+
+    
+

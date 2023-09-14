@@ -1,6 +1,6 @@
 <?php
-        require_once $_SERVER['DOCUMENT_ROOT'] . "/models/Aluno.php";
 
+require_once $_SERVER['DOCUMENT_ROOT'] ."/models/Aluno.php";
 
     class AlunoController{
 
@@ -8,12 +8,30 @@
 
         public function __construct()
         {
-            $this->alunoModel = new aluno();
+        $this->alunoModel = New Alunos();
+        }
+        public function listarAlunos(){
+
+        return $this->alunoModel->Listar();
         }
 
-        public function listaraluno(){
-            return $this->alunoModel->listar();
+        public function cadastrarAluno(){
 
-        }
+            if($_SERVER['REQUEST_METHOD'] === 'POST'){
+    
+                $dados = [
+                    'nome' => $_POST['nome'],
+                    'cpf' => $_POST['cpf'],
+                    'email' => $_POST['email'],
+                    'telefone' => $_POST['telefone'],
+                    'celular' => $_POST['celular'],
+                    'data_nascimento' => $_POST['data_nascimento']
+                ];
 
+                $this->alunoModel->Cadastrar($dados);
+
+                header('Location: index.php');
+                exit;
+            }
+        }    
     }

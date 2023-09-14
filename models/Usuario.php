@@ -19,14 +19,14 @@ class Usuario
      * @param int $id
      * @return
      */
-    public function Buscar($id){
+    public function Buscar($id_usuario){
 
         try{
 
-            $sql = "SELECT * FROM {$this->table} WHERE id_usuario = :id";
+            $sql = "SELECT * FROM {$this->table} WHERE id_usuario = :id_usuario";
 
             $stmt = $this->db->prepare($sql);
-            $stmt->bindParam(':id', $id);
+            $stmt->bindParam(':id_usuario', $id_usuario);
 
             $stmt->execute();
 
@@ -47,12 +47,12 @@ class Usuario
 
         try{
 
-            $sql = 'SELECT * FROM usuarios';
+            $sql = "SELECT * FROM {$this->table}";
             $stmt = $this->db->prepare($sql);
 
-            echo $sql;
             $stmt->execute();
             return $stmt->fetchAll(PDO::FETCH_OBJ);
+
         }catch(PDOException $e){
 
             echo "Erro ao listar dados: ".$e->getMessage();
@@ -99,55 +99,51 @@ class Usuario
         *$param array @dados
         *@return bool
         */
-        public function Editar($id, $dados){
+        public function Editar($id_usuario, $dados){
     
         try{
 
             $sql = "UPDATE {$this->table} set nome = :nome, email = :email,
 
-            senha = :senha, perfil = :perfil WHERE id_usuario = :id";
+            senha = :senha, perfil = :perfil WHERE id_usuario = :id_usuario";
 
             $stmt = $this->db->prepare($sql);
 
-        }catch (PDOException $e){
-
-            echo"erro na preparação da consulta:".$e->getMessage();
-
-        }
-
-        $stmt->bindparam(':nome',$dados['nome']);
-        $stmt->bindParam(':email',$dados['email']);
-        $stmt->bindParam(':senha',$dados['senha']);
-        $stmt->bindParam(':perfil',$dados['perfil']);
-
-        try{
-
+            $stmt->bindparam(':nome',$dados['nome']);
+            $stmt->bindParam(':email',$dados['email']);
+            $stmt->bindParam(':senha',$dados['senha']);
+            $stmt->bindParam(':perfil',$dados['perfil']);
+            $stmt->bindParam(':id_usuario', $id_usuario, PDO::PARAM_INT);
             $stmt->execute();
-
-            echo "inserção bem-sucedida!";
-
+            $_SESSION['sucesso'] = "Usuário editado com sucesso!";
+            return true;
         }catch (PDOException $e){
 
-            echo"erro na iserçao:".$e->getMessage();
+            echo "Erro ao editar:".$e->getMessage();
+            return false;
 
-        }
+        }    
+
+        
     }
     //Excluir usuário
-    public function Excluir($id){
+    public function Excluir($id_usuario){
 
         try{
 
-            $sql = "DELETE FROM {$this->table} WHERE id_usuario = id";
+            $sql = "DELETE FROM {$this->table} WHERE id_usuario = :id_usuario";
 
             $stmt = $this->db->prepare($sql);
 
-            $stmt->bindParam(':id',$id, PDO:: PARAM_INT);
-
-            $stmt->execute();  
+            $stmt->bindParam(':id_usuario',$id_usuario, PDO:: PARAM_INT);
+            $stmt->execute();
+            $_SESSION['sucesso'] = "Usuário excluido com sucesso!";
+            return true;
 
         }catch (PDOException $e){
 
-            echo "Erro ao excluir dados: ".$e->getMessage();
+            echo "Erro ao excluir: ".$e->getMessage();
+            return false;
 
         }
 
